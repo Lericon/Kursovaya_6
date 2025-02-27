@@ -23,14 +23,14 @@ namespace Kursovaya
 
             saveFileDialog.Filter = "Текстовые файлы(*.txt)|*.txt|Все файлы(*.*)|*.*";
 
-            CreateBtn.Click += CreateToolStripMenuItem_Click;
-            OpenBtn.Click += OpenToolStripMenuItem_Click;
-            SaveBtn.Click += SaveToolStripMenuItem_Click;
-            CancelBtn.Click += CancelToolStripMenuItem_Click;
-            RepeatBtn.Click += RepeatToolStripMenuItem_Click;
-            CutBtn.Click += CutToolStripMenuItem_Click;
-            CopyBtn.Click += CopyToolStripMenuItem_Click;
-            PasteBtn.Click += PasteToolStripMenuItem_Click;
+            CreateBtn.Click += CreateToolStripMenuItem_Click!;
+            OpenBtn.Click += OpenToolStripMenuItem_Click!;
+            SaveBtn.Click += SaveToolStripMenuItem_Click!;
+            CancelBtn.Click += CancelToolStripMenuItem_Click!;
+            RepeatBtn.Click += RepeatToolStripMenuItem_Click!;
+            CutBtn.Click += CutToolStripMenuItem_Click!;
+            CopyBtn.Click += CopyToolStripMenuItem_Click!;
+            PasteBtn.Click += PasteToolStripMenuItem_Click!;
         }
 
         private void CreateToolStripMenuItem_Click(object sender, EventArgs e)

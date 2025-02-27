@@ -8,10 +8,10 @@ namespace Kursovaya
 {
     public class File
     {
-        public string? filename;
-        public string? path;
-        public string? EditText;
-        public string? FinalText;
+        public string filename;
+        public string path;
+        public string EditText;
+        public string FinalText;
         public bool file_saved;
         public bool file_saved_as;
 
