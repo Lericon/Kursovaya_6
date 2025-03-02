@@ -31,14 +31,18 @@ namespace Kursovaya
 
             saveFileDialog.Filter = "Текстовые файлы(*.txt)|*.txt|Все файлы(*.*)|*.*";
 
-            CreateBtn.Click += CreateToolStripMenuItem_Click!;
-            OpenBtn.Click += OpenToolStripMenuItem_Click!;
-            SaveBtn.Click += SaveToolStripMenuItem_Click!;
-            CancelBtn.Click += CancelToolStripMenuItem_Click!;
-            RepeatBtn.Click += RepeatToolStripMenuItem_Click!;
-            CutBtn.Click += CutToolStripMenuItem_Click!;
-            CopyBtn.Click += CopyToolStripMenuItem_Click!;
-            PasteBtn.Click += PasteToolStripMenuItem_Click!;
+            CreateBtn.Click += CreateToolStripMenuItem_Click;
+            OpenBtn.Click += OpenToolStripMenuItem_Click;
+            SaveBtn.Click += SaveToolStripMenuItem_Click;
+            CancelBtn.Click += CancelToolStripMenuItem_Click;
+            RepeatBtn.Click += RepeatToolStripMenuItem_Click;
+            CutBtn.Click += CutToolStripMenuItem_Click;
+            CopyBtn.Click += CopyToolStripMenuItem_Click;
+            PasteBtn.Click += PasteToolStripMenuItem_Click;
+            HelpBtn.Click += OpenHelpToolStripMenuItem_Click;
+            AboutBtn.Click += AboutToolStripMenuItem_Click;
+
+            LoadFontComboBox();
         }
 
         private void CreateToolStripMenuItem_Click(object sender, EventArgs e)
@@ -171,13 +175,14 @@ namespace Kursovaya
         {
             if (NumbersBox.Items.Count == 0) return;
 
-            int firstCharIndex = EditRTB.GetCharIndexFromPosition(new Point(0, 3));
+            int firstCharIndex = EditRTB.GetCharIndexFromPosition(new Point(0, 5));
             int firstVisibleLine = EditRTB.GetLineFromCharIndex(firstCharIndex);
 
             if (firstVisibleLine < NumbersBox.Items.Count)
             {
                 NumbersBox.TopIndex = firstVisibleLine;
             }
+            NumbersBox.ItemHeight = (int)(EditRTB.Font.Size * 1.7);
         }
 
         private void NumbersBox_DrawItem(object sender, DrawItemEventArgs e)
@@ -474,7 +479,7 @@ namespace Kursovaya
         private void UpdateControlsText(Control control, ResourceManager res)
         {
             LanguageBtn.Text = res.GetString("LanguageBtn");
-            newFileName = res.GetString("newFileName");
+            newFileName = res.GetString("newFileName")!;
 
             foreach (var item in this.MainMenuStrip.Items)
             {
@@ -519,6 +524,37 @@ namespace Kursovaya
                 UpdateControlsText(this, res);
                 currentLanguage = true;
             }
+        }
+
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Анализатор кода | Работу выполнил студент АВТФ, группы АВТ-214 - Беликов И.Ю.");
+        }
+
+        private void OpenHelpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string helpFilePath = "ContentsFile.chm";
+            if (System.IO.File.Exists(helpFilePath))
+            {
+                Help.ShowHelp(this, helpFilePath);
+            };
+        }
+
+        private void LoadFontComboBox()
+        {
+            FontComboBox.Items.Add(9);
+            FontComboBox.Items.Add(11);
+            FontComboBox.Items.Add(12);
+            FontComboBox.SelectedIndex = 2;
+        }
+
+        private void FontComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Font selectedFont = new Font("Segou UI", Convert.ToInt32(FontComboBox.SelectedItem));
+            EditRTB.Font = selectedFont;
+            FinalRTB.Font = selectedFont;
+            NumbersBox.Font = selectedFont;
+            SyncScroll();
         }
     }
 }

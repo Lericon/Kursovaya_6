@@ -58,6 +58,8 @@
             OpenHelpToolStripMenuItem = new ToolStripMenuItem();
             AboutToolStripMenuItem = new ToolStripMenuItem();
             panel1 = new Panel();
+            FontComboBox = new ComboBox();
+            LanguageBtn = new Button();
             HelpBtn = new Button();
             StartBtn = new Button();
             PasteBtn = new Button();
@@ -79,7 +81,6 @@
             FinalRTB = new RichTextBox();
             saveFileDialog = new SaveFileDialog();
             openFileDialog = new OpenFileDialog();
-            LanguageBtn = new Button();
             MainMenuStrip.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -280,16 +281,19 @@
             OpenHelpToolStripMenuItem.Name = "OpenHelpToolStripMenuItem";
             OpenHelpToolStripMenuItem.Size = new Size(156, 22);
             OpenHelpToolStripMenuItem.Text = "Вызов справки";
+            OpenHelpToolStripMenuItem.Click += OpenHelpToolStripMenuItem_Click;
             // 
             // AboutToolStripMenuItem
             // 
             AboutToolStripMenuItem.Name = "AboutToolStripMenuItem";
             AboutToolStripMenuItem.Size = new Size(156, 22);
             AboutToolStripMenuItem.Text = "О программе";
+            AboutToolStripMenuItem.Click += AboutToolStripMenuItem_Click;
             // 
             // panel1
             // 
             panel1.BackColor = SystemColors.Control;
+            panel1.Controls.Add(FontComboBox);
             panel1.Controls.Add(LanguageBtn);
             panel1.Controls.Add(HelpBtn);
             panel1.Controls.Add(StartBtn);
@@ -307,6 +311,31 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(784, 55);
             panel1.TabIndex = 1;
+            // 
+            // FontComboBox
+            // 
+            FontComboBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            FontComboBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            FontComboBox.ForeColor = SystemColors.MenuText;
+            FontComboBox.FormattingEnabled = true;
+            FontComboBox.Location = new Point(628, 13);
+            FontComboBox.Name = "FontComboBox";
+            FontComboBox.Size = new Size(76, 29);
+            FontComboBox.TabIndex = 12;
+            FontComboBox.Text = "12";
+            FontComboBox.SelectedIndexChanged += FontComboBox_SelectedIndexChanged;
+            // 
+            // LanguageBtn
+            // 
+            LanguageBtn.Dock = DockStyle.Right;
+            LanguageBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            LanguageBtn.Location = new Point(704, 0);
+            LanguageBtn.Name = "LanguageBtn";
+            LanguageBtn.Size = new Size(80, 55);
+            LanguageBtn.TabIndex = 11;
+            LanguageBtn.Text = "Русский";
+            LanguageBtn.UseVisualStyleBackColor = true;
+            LanguageBtn.Click += LanguageBtn_Click;
             // 
             // HelpBtn
             // 
@@ -505,6 +534,7 @@
             // 
             NumbersBox.Dock = DockStyle.Left;
             NumbersBox.FormattingEnabled = true;
+            NumbersBox.IntegralHeight = false;
             NumbersBox.ItemHeight = 21;
             NumbersBox.Location = new Point(0, 0);
             NumbersBox.MinimumSize = new Size(60, 195);
@@ -529,18 +559,6 @@
             // 
             openFileDialog.FileName = "openFileDialog1";
             // 
-            // LanguageBtn
-            // 
-            LanguageBtn.Dock = DockStyle.Right;
-            LanguageBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            LanguageBtn.Location = new Point(692, 0);
-            LanguageBtn.Name = "LanguageBtn";
-            LanguageBtn.Size = new Size(92, 55);
-            LanguageBtn.TabIndex = 11;
-            LanguageBtn.Text = "Русский";
-            LanguageBtn.UseVisualStyleBackColor = true;
-            LanguageBtn.Click += LanguageBtn_Click;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -551,7 +569,9 @@
             Controls.Add(MainMenuStrip);
             MinimumSize = new Size(800, 600);
             Name = "MainForm";
-            Text = "Compiler";
+            ShowIcon = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Анализатор";
             MainMenuStrip.ResumeLayout(false);
             MainMenuStrip.PerformLayout();
             panel1.ResumeLayout(false);
@@ -622,5 +642,6 @@
         private OpenFileDialog openFileDialog;
         private ToolStripMenuItem CloseFileToolStripMenuItem;
         private Button LanguageBtn;
+        private ComboBox FontComboBox;
     }
 }
