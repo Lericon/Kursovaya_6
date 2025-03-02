@@ -79,6 +79,7 @@
             FinalRTB = new RichTextBox();
             saveFileDialog = new SaveFileDialog();
             openFileDialog = new OpenFileDialog();
+            LanguageBtn = new Button();
             MainMenuStrip.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -160,49 +161,49 @@
             // CancelToolStripMenuItem
             // 
             CancelToolStripMenuItem.Name = "CancelToolStripMenuItem";
-            CancelToolStripMenuItem.Size = new Size(180, 22);
+            CancelToolStripMenuItem.Size = new Size(148, 22);
             CancelToolStripMenuItem.Text = "Отменить";
             CancelToolStripMenuItem.Click += CancelToolStripMenuItem_Click;
             // 
             // RepeatToolStripMenuItem
             // 
             RepeatToolStripMenuItem.Name = "RepeatToolStripMenuItem";
-            RepeatToolStripMenuItem.Size = new Size(180, 22);
+            RepeatToolStripMenuItem.Size = new Size(148, 22);
             RepeatToolStripMenuItem.Text = "Повторить";
             RepeatToolStripMenuItem.Click += RepeatToolStripMenuItem_Click;
             // 
             // CutToolStripMenuItem
             // 
             CutToolStripMenuItem.Name = "CutToolStripMenuItem";
-            CutToolStripMenuItem.Size = new Size(180, 22);
+            CutToolStripMenuItem.Size = new Size(148, 22);
             CutToolStripMenuItem.Text = "Вырезать";
             CutToolStripMenuItem.Click += CutToolStripMenuItem_Click;
             // 
             // CopyToolStripMenuItem
             // 
             CopyToolStripMenuItem.Name = "CopyToolStripMenuItem";
-            CopyToolStripMenuItem.Size = new Size(180, 22);
+            CopyToolStripMenuItem.Size = new Size(148, 22);
             CopyToolStripMenuItem.Text = "Копировать";
             CopyToolStripMenuItem.Click += CopyToolStripMenuItem_Click;
             // 
             // PasteToolStripMenuItem
             // 
             PasteToolStripMenuItem.Name = "PasteToolStripMenuItem";
-            PasteToolStripMenuItem.Size = new Size(180, 22);
+            PasteToolStripMenuItem.Size = new Size(148, 22);
             PasteToolStripMenuItem.Text = "Вставить";
             PasteToolStripMenuItem.Click += PasteToolStripMenuItem_Click;
             // 
             // DeleteToolStripMenuItem
             // 
             DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
-            DeleteToolStripMenuItem.Size = new Size(180, 22);
+            DeleteToolStripMenuItem.Size = new Size(148, 22);
             DeleteToolStripMenuItem.Text = "Удалить";
             DeleteToolStripMenuItem.Click += DeleteToolStripMenuItem_Click;
             // 
             // SelectAllВсеToolStripMenuItem
             // 
             SelectAllВсеToolStripMenuItem.Name = "SelectAllВсеToolStripMenuItem";
-            SelectAllВсеToolStripMenuItem.Size = new Size(180, 22);
+            SelectAllВсеToolStripMenuItem.Size = new Size(148, 22);
             SelectAllВсеToolStripMenuItem.Text = "Выделить все";
             SelectAllВсеToolStripMenuItem.Click += SelectAllВсеToolStripMenuItem_Click;
             // 
@@ -289,6 +290,7 @@
             // panel1
             // 
             panel1.BackColor = SystemColors.Control;
+            panel1.Controls.Add(LanguageBtn);
             panel1.Controls.Add(HelpBtn);
             panel1.Controls.Add(StartBtn);
             panel1.Controls.Add(PasteBtn);
@@ -527,6 +529,18 @@
             // 
             openFileDialog.FileName = "openFileDialog1";
             // 
+            // LanguageBtn
+            // 
+            LanguageBtn.Dock = DockStyle.Right;
+            LanguageBtn.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            LanguageBtn.Location = new Point(692, 0);
+            LanguageBtn.Name = "LanguageBtn";
+            LanguageBtn.Size = new Size(92, 55);
+            LanguageBtn.TabIndex = 11;
+            LanguageBtn.Text = "Русский";
+            LanguageBtn.UseVisualStyleBackColor = true;
+            LanguageBtn.Click += LanguageBtn_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -607,5 +621,6 @@
         private SaveFileDialog saveFileDialog;
         private OpenFileDialog openFileDialog;
         private ToolStripMenuItem CloseFileToolStripMenuItem;
+        private Button LanguageBtn;
     }
 }

@@ -4,11 +4,15 @@ using Kursovaya.Properties;
 using System.Reflection.Metadata;
 using System;
 using System.Xml.Linq;
+using System.Resources;
+using System.Globalization;
 
 namespace Kursovaya
 {
     public partial class MainForm : Form
     {
+        private string newFileName = "Новый документ *";
+        private bool currentLanguage = false;
         public List<File> files;
         private bool anotherFile;
         int index = 0;
@@ -39,7 +43,7 @@ namespace Kursovaya
 
         private void CreateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            File file = new File("Новый документ *", null, null, null, false, false);
+            File file = new File(newFileName, null, null, null, false, false);
             this.files.Add(file);
 
             AddNewTabPage(file.filename);
@@ -194,7 +198,7 @@ namespace Kursovaya
         private void EditRTB_TextChanged(object sender, EventArgs e)
         {
             int index = TabControl.SelectedIndex;
-            
+
             if (anotherFile == true)
             {
                 anotherFile = false;
@@ -210,9 +214,9 @@ namespace Kursovaya
             }
             lastCursorPos = EditRTB.SelectionStart;
             if (
-                EditRTB.SelectionLength == 0 && 
-                EditRTB.Text.Length > lastText.Length && 
-                lastCursorPos > 0 && 
+                EditRTB.SelectionLength == 0 &&
+                EditRTB.Text.Length > lastText.Length &&
+                lastCursorPos > 0 &&
                 lastAction != LastActionType.Backspace &&
                 lastAction != LastActionType.Paste
                 )
@@ -224,7 +228,7 @@ namespace Kursovaya
 
         private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            File file = new File("Новый документ", null, EditRTB.Text, null, false, false);
+            File file = new File(newFileName, null, EditRTB.Text, null, false, false);
 
             TabControl.TabPages[TabControl.SelectedIndex].Controls.Add(this.splitContainer1);
 
@@ -333,7 +337,7 @@ namespace Kursovaya
             }
             else if (keyData == (Keys.Control | Keys.N))
             {
-                File file = new File("Новый документ *", null, null, null, false, false);
+                File file = new File(newFileName, null, null, null, false, false);
                 this.files.Add(file);
 
                 AddNewTabPage(file.filename);
@@ -464,6 +468,56 @@ namespace Kursovaya
             if (EditRTB.CanUndo)
             {
                 EditRTB.Undo();
+            }
+        }
+
+        private void UpdateControlsText(Control control, ResourceManager res)
+        {
+            LanguageBtn.Text = res.GetString("LanguageBtn");
+            newFileName = res.GetString("newFileName");
+
+            foreach (var item in this.MainMenuStrip.Items)
+            {
+                if (item is ToolStripMenuItem menuItem)
+                {
+                    UpdateMenuItems(menuItem, res);
+                }
+            }
+        }
+        private void UpdateMenuItems(ToolStripMenuItem menuItem, ResourceManager res)
+        {
+            if (!string.IsNullOrEmpty(menuItem.Name))
+            {
+                string newText = res.GetString(menuItem.Name);
+                if (!string.IsNullOrEmpty(newText))
+                    menuItem.Text = newText;
+            }
+
+
+            foreach (ToolStripItem subItem in menuItem.DropDownItems)
+            {
+                if (subItem is ToolStripMenuItem subMenuItem)
+                {
+                    UpdateMenuItems(subMenuItem, res);
+                }
+            }
+        }
+
+        private void LanguageBtn_Click(object sender, EventArgs e)
+        {
+            if (currentLanguage)
+            {
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("ru");
+                ResourceManager res = new ResourceManager("Kursovaya.Properties.Resources_ru", typeof(MainForm).Assembly);
+                UpdateControlsText(this, res);
+                currentLanguage = false;
+            }
+            else
+            {
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
+                ResourceManager res = new ResourceManager("Kursovaya.Properties.Resources_en", typeof(MainForm).Assembly);
+                UpdateControlsText(this, res);
+                currentLanguage = true;
             }
         }
     }
