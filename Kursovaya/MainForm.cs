@@ -12,6 +12,10 @@ namespace Kursovaya
         public List<File> files;
         private bool anotherFile;
         int index = 0;
+        private enum LastActionType { None, Insert, Backspace, Paste }
+        private LastActionType lastAction = LastActionType.None;
+        private string lastText = "";
+        private int lastCursorPos = 0;
         public MainForm()
         {
             InitializeComponent();
@@ -190,6 +194,7 @@ namespace Kursovaya
         private void EditRTB_TextChanged(object sender, EventArgs e)
         {
             int index = TabControl.SelectedIndex;
+            
             if (anotherFile == true)
             {
                 anotherFile = false;
@@ -203,7 +208,18 @@ namespace Kursovaya
                     TabControl.TabPages[TabControl.SelectedIndex].Text = files[TabControl.SelectedIndex].filename + " *";
                 }
             }
-
+            lastCursorPos = EditRTB.SelectionStart;
+            if (
+                EditRTB.SelectionLength == 0 && 
+                EditRTB.Text.Length > lastText.Length && 
+                lastCursorPos > 0 && 
+                lastAction != LastActionType.Backspace &&
+                lastAction != LastActionType.Paste
+                )
+            {
+                lastAction = LastActionType.Insert;
+                lastText = EditRTB.Text.Substring(lastCursorPos - 1, 1);
+            }
         }
 
         private void TabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -328,6 +344,43 @@ namespace Kursovaya
                 CloseFile(currentFile);
                 return true;
             }
+            else if (keyData == (Keys.Control | Keys.V))
+            {
+                PasteFunction();
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.C))
+            {
+                EditRTB.Copy();
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.Z))
+            {
+                UndoFunction();
+                return true;
+            }
+            else if (keyData == (Keys.Back))
+            {
+                lastAction = LastActionType.Backspace;
+                if (EditRTB.Text.Length > 0)
+                {
+                    if (EditRTB.SelectionLength > 0)
+                    {
+                        EditRTB.SelectedText = "";
+                    }
+                    else if (EditRTB.SelectionLength == 0)
+                    {
+                        EditRTB.SelectionStart--;
+                        EditRTB.SelectionLength = 1;
+                        EditRTB.SelectedText = "";
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                lastAction = LastActionType.Insert;
+            }
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -338,16 +391,30 @@ namespace Kursovaya
 
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            DeleteFunction();
+        }
+
+        private void DeleteFunction()
+        {
             if (EditRTB.Text.Length > 0)
             {
+                lastAction = LastActionType.Backspace;
+                lastText = EditRTB.SelectedText;
                 EditRTB.SelectedText = "";
             }
         }
 
         private void PasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            PasteFunction();
+        }
+
+        private void PasteFunction()
+        {
             if (Clipboard.ContainsText())
             {
+                lastAction = LastActionType.Paste;
+                lastText = Clipboard.GetText();
                 EditRTB.Paste();
             }
         }
@@ -364,13 +431,35 @@ namespace Kursovaya
 
         private void RepeatToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (EditRTB.CanRedo)
+            switch (lastAction)
             {
-                EditRTB.Redo();
+                case LastActionType.Insert:
+                    int pos = EditRTB.SelectionStart;
+                    EditRTB.SelectedText = lastText;
+                    EditRTB.SelectionStart = pos + lastText.Length;
+                    break;
+
+                case LastActionType.Backspace:
+                    if (EditRTB.Text.Length > 0)
+                    {
+                        EditRTB.SelectionStart--;
+                        EditRTB.SelectionLength = 1;
+                        EditRTB.SelectedText = "";
+                    }
+                    break;
+
+                case LastActionType.Paste:
+                    EditRTB.Paste();
+                    break;
             }
         }
 
         private void CancelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UndoFunction();
+        }
+
+        private void UndoFunction()
         {
             if (EditRTB.CanUndo)
             {
