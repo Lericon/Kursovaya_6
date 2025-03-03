@@ -6,6 +6,7 @@ using System;
 using System.Xml.Linq;
 using System.Resources;
 using System.Globalization;
+using System.Text.Json;
 
 namespace Kursovaya
 {
@@ -238,7 +239,6 @@ namespace Kursovaya
             TabControl.TabPages[TabControl.SelectedIndex].Controls.Add(this.splitContainer1);
 
             files[this.index].EditText = EditRTB.Text;
-            files[this.index].FinalText = FinalRTB.Text;
 
             anotherFile = true;
             EditRTB.Text = files[TabControl.SelectedIndex].EditText;
@@ -552,7 +552,6 @@ namespace Kursovaya
         {
             Font selectedFont = new Font("Segou UI", Convert.ToInt32(FontComboBox.SelectedItem));
             EditRTB.Font = selectedFont;
-            FinalRTB.Font = selectedFont;
             NumbersBox.Font = selectedFont;
             SyncScroll();
         }
