@@ -6,7 +6,6 @@ using System;
 using System.Xml.Linq;
 using System.Resources;
 using System.Globalization;
-using System.Text.Json;
 
 namespace Kursovaya
 {
@@ -42,6 +41,8 @@ namespace Kursovaya
             PasteBtn.Click += PasteToolStripMenuItem_Click;
             HelpBtn.Click += OpenHelpToolStripMenuItem_Click;
             AboutBtn.Click += AboutToolStripMenuItem_Click;
+            this.FormClosing += ExitToolStripMenuItem_Click;
+            StartBtn.Click += StartToolStripMenuItem_Click;
 
             LoadFontComboBox();
         }
@@ -269,14 +270,14 @@ namespace Kursovaya
                     DialogResult result = MessageBox.Show(
                         $"Сохранить файл \"{file.filename}\"?",
                         "Сохранение файла",
-                        MessageBoxButtons.YesNoCancel,
+                        MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question
                     );
                     if (result == DialogResult.Yes)
                     {
                         SaveFile(file);
                     }
-                    else if (result == DialogResult.Cancel)
+                    else if (result == DialogResult.No)
                     {
                         return;
                     }
@@ -298,14 +299,14 @@ namespace Kursovaya
                 DialogResult result = MessageBox.Show(
                     $"Сохранить файл \"{file.filename}\"?",
                     "Сохранение файла",
-                    MessageBoxButtons.YesNoCancel,
+                    MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question
                 );
                 if (result == DialogResult.Yes)
                 {
                     SaveFile(file);
                 }
-                else if (result == DialogResult.Cancel)
+                else if (result == DialogResult.No)
                 {
                     return;
                 }
@@ -554,6 +555,21 @@ namespace Kursovaya
             EditRTB.Font = selectedFont;
             NumbersBox.Font = selectedFont;
             SyncScroll();
+        }
+
+        private void StartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DataGridView.Rows.Clear();
+            string code = EditRTB.Text;
+            File currentFile = files[TabControl.SelectedIndex];
+            string filePath = currentFile.path;
+            Scanner scanner = new Scanner(code, filePath);
+            (int, string, string, int, int) token;
+
+            while ((token = scanner.GetNextToken()).Item1 != (int)TokenType.Error)
+            {
+                DataGridView.Rows.Add(token.Item1, token.Item2, token.Item3, $"С {token.Item4} по {token.Item5} символ");
+            }
         }
     }
 }

@@ -78,13 +78,13 @@
             MainPanel = new Panel();
             EditRTB = new RichTextBox();
             NumbersBox = new ListBox();
+            DataGridView = new DataGridView();
+            CodeColumn = new DataGridViewTextBoxColumn();
+            TypeColumn = new DataGridViewTextBoxColumn();
+            LexemColumn = new DataGridViewTextBoxColumn();
+            PlaceColumn = new DataGridViewTextBoxColumn();
             saveFileDialog = new SaveFileDialog();
             openFileDialog = new OpenFileDialog();
-            DataGridView = new DataGridView();
-            FilePathColumn = new DataGridViewTextBoxColumn();
-            LineInRTBColumn = new DataGridViewTextBoxColumn();
-            CodeColumn = new DataGridViewTextBoxColumn();
-            MessageColumn = new DataGridViewTextBoxColumn();
             MainMenuStrip.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -273,6 +273,7 @@
             StartToolStripMenuItem.Name = "StartToolStripMenuItem";
             StartToolStripMenuItem.Size = new Size(46, 20);
             StartToolStripMenuItem.Text = "Пуск";
+            StartToolStripMenuItem.Click += StartToolStripMenuItem_Click;
             // 
             // HelpToolStripMenuItem
             // 
@@ -459,7 +460,7 @@
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(0, 79);
             panel2.Name = "panel2";
-            panel2.Size = new Size(784, 482);
+            panel2.Size = new Size(784, 582);
             panel2.TabIndex = 2;
             // 
             // TabControl
@@ -470,7 +471,7 @@
             TabControl.Location = new Point(0, 0);
             TabControl.Name = "TabControl";
             TabControl.SelectedIndex = 0;
-            TabControl.Size = new Size(784, 482);
+            TabControl.Size = new Size(784, 582);
             TabControl.SizeMode = TabSizeMode.Fixed;
             TabControl.TabIndex = 6;
             TabControl.SelectedIndexChanged += TabControl_SelectedIndexChanged;
@@ -482,7 +483,7 @@
             tabPage1.Location = new Point(4, 34);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(776, 444);
+            tabPage1.Size = new Size(776, 544);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Новый документ *";
             tabPage1.UseVisualStyleBackColor = true;
@@ -503,8 +504,8 @@
             // 
             splitContainer1.Panel2.Controls.Add(DataGridView);
             splitContainer1.Panel2MinSize = 180;
-            splitContainer1.Size = new Size(770, 438);
-            splitContainer1.SplitterDistance = 195;
+            splitContainer1.Size = new Size(770, 538);
+            splitContainer1.SplitterDistance = 213;
             splitContainer1.SplitterWidth = 30;
             splitContainer1.TabIndex = 6;
             splitContainer1.TabStop = false;
@@ -518,7 +519,7 @@
             MainPanel.Location = new Point(0, 0);
             MainPanel.MinimumSize = new Size(770, 195);
             MainPanel.Name = "MainPanel";
-            MainPanel.Size = new Size(770, 195);
+            MainPanel.Size = new Size(770, 213);
             MainPanel.TabIndex = 5;
             // 
             // EditRTB
@@ -529,7 +530,7 @@
             EditRTB.Location = new Point(60, 0);
             EditRTB.Name = "EditRTB";
             EditRTB.ScrollBars = RichTextBoxScrollBars.Vertical;
-            EditRTB.Size = new Size(710, 195);
+            EditRTB.Size = new Size(710, 213);
             EditRTB.TabIndex = 3;
             EditRTB.Text = "";
             EditRTB.WordWrap = false;
@@ -544,13 +545,9 @@
             NumbersBox.Location = new Point(0, 0);
             NumbersBox.MinimumSize = new Size(60, 195);
             NumbersBox.Name = "NumbersBox";
-            NumbersBox.Size = new Size(60, 195);
+            NumbersBox.Size = new Size(60, 213);
             NumbersBox.TabIndex = 4;
             NumbersBox.SelectedIndexChanged += NumbersBox_SelectedIndexChanged;
-            // 
-            // openFileDialog
-            // 
-            openFileDialog.FileName = "openFileDialog1";
             // 
             // DataGridView
             // 
@@ -559,27 +556,13 @@
             DataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             DataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             DataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            DataGridView.Columns.AddRange(new DataGridViewColumn[] { FilePathColumn, LineInRTBColumn, CodeColumn, MessageColumn });
+            DataGridView.Columns.AddRange(new DataGridViewColumn[] { CodeColumn, TypeColumn, LexemColumn, PlaceColumn });
             DataGridView.Dock = DockStyle.Fill;
             DataGridView.Location = new Point(0, 0);
             DataGridView.Name = "DataGridView";
             DataGridView.ReadOnly = true;
-            DataGridView.Size = new Size(770, 213);
+            DataGridView.Size = new Size(770, 295);
             DataGridView.TabIndex = 0;
-            // 
-            // FilePathColumn
-            // 
-            FilePathColumn.HeaderText = "Путь к файлу";
-            FilePathColumn.Name = "FilePathColumn";
-            FilePathColumn.ReadOnly = true;
-            FilePathColumn.Width = 129;
-            // 
-            // LineInRTBColumn
-            // 
-            LineInRTBColumn.HeaderText = "Строка";
-            LineInRTBColumn.Name = "LineInRTBColumn";
-            LineInRTBColumn.ReadOnly = true;
-            LineInRTBColumn.Width = 86;
             // 
             // CodeColumn
             // 
@@ -588,22 +571,40 @@
             CodeColumn.ReadOnly = true;
             CodeColumn.Width = 62;
             // 
-            // MessageColumn
+            // TypeColumn
             // 
-            MessageColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            MessageColumn.HeaderText = "Сообщение";
-            MessageColumn.Name = "MessageColumn";
-            MessageColumn.ReadOnly = true;
+            TypeColumn.HeaderText = "Тип лексемы";
+            TypeColumn.Name = "TypeColumn";
+            TypeColumn.ReadOnly = true;
+            TypeColumn.Width = 126;
+            // 
+            // LexemColumn
+            // 
+            LexemColumn.HeaderText = "Лексема";
+            LexemColumn.Name = "LexemColumn";
+            LexemColumn.ReadOnly = true;
+            LexemColumn.Width = 96;
+            // 
+            // PlaceColumn
+            // 
+            PlaceColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            PlaceColumn.HeaderText = "Местоположение";
+            PlaceColumn.Name = "PlaceColumn";
+            PlaceColumn.ReadOnly = true;
+            // 
+            // openFileDialog
+            // 
+            openFileDialog.FileName = "openFileDialog1";
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 561);
+            ClientSize = new Size(784, 661);
             Controls.Add(panel2);
             Controls.Add(panel1);
             Controls.Add(MainMenuStrip);
-            MinimumSize = new Size(800, 600);
+            MinimumSize = new Size(800, 700);
             Name = "MainForm";
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
@@ -680,9 +681,9 @@
         private Button LanguageBtn;
         private ComboBox FontComboBox;
         private DataGridView DataGridView;
-        private DataGridViewTextBoxColumn FilePathColumn;
-        private DataGridViewTextBoxColumn LineInRTBColumn;
         private DataGridViewTextBoxColumn CodeColumn;
-        private DataGridViewTextBoxColumn MessageColumn;
+        private DataGridViewTextBoxColumn TypeColumn;
+        private DataGridViewTextBoxColumn LexemColumn;
+        private DataGridViewTextBoxColumn PlaceColumn;
     }
 }
