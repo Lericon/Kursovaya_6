@@ -10,13 +10,11 @@ namespace Kursovaya
     {
         private string input;
         private int position;
-        private string filePath;
 
-        public Scanner(string input, string filePath)
+        public Scanner(string input)
         {
             this.input = input;
             this.position = 0;
-            this.filePath = filePath;
         }
 
         public (int, string, string, int, int) GetNextToken()
@@ -62,16 +60,16 @@ namespace Kursovaya
                 return ((int)TokenType.AssignmentOperator, "Оператор присваивания", current.ToString(), startPos+1, position);
             }
 
-            if (current == '"')
+            if (current == '\'')
             {
                 position++;
                 StringBuilder strLiteral = new StringBuilder();
-                while (position < input.Length && input[position] != '"')
+                while (position < input.Length && input[position] != '\'')
                 {
                     strLiteral.Append(input[position]);
                     position++;
                 }
-                if (position < input.Length && input[position] == '"')
+                if (position < input.Length && input[position] == '\'')
                     position++;
                 return ((int)TokenType.StringLiteral, "Строка", strLiteral.ToString(), startPos+1, position);
             }

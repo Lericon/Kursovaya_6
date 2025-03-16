@@ -563,7 +563,7 @@ namespace Kursovaya
             string code = EditRTB.Text;
             File currentFile = files[TabControl.SelectedIndex];
             string filePath = currentFile.path;
-            Scanner scanner = new Scanner(code, filePath);
+            Scanner scanner = new Scanner(code);
             (int, string, string, int, int) token;
 
             while ((token = scanner.GetNextToken()).Item1 != (int)TokenType.Error)
