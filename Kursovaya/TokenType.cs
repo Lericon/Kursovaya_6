@@ -16,6 +16,7 @@ namespace Kursovaya
         AssignmentOperator = 6,
         StringLiteral = 7,
         EndStatement = 8,
-        Error = -1
+        Error = 9,
+        End = -1
     }
 }

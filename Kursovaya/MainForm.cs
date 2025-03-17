@@ -566,10 +566,11 @@ namespace Kursovaya
             Scanner scanner = new Scanner(code);
             (int, string, string, int, int) token;
 
-            while ((token = scanner.GetNextToken()).Item1 != (int)TokenType.Error)
+            while ((token = scanner.GetNextToken()).Item1 != (int)TokenType.End)
             {
                 DataGridView.Rows.Add(token.Item1, token.Item2, token.Item3, $"С {token.Item4} по {token.Item5} символ");
             }
+            EditRTB.Text = scanner.RemoveSpaces(code);
         }
     }
 }
